@@ -1,0 +1,52 @@
+###########################################################
+# System wspomagajacy decyzje w zakresie planowania pracy #
+# ujec wody.                                              #
+# SKRYPT URUCHAMIAJACY - Metoda punktu odniesienia        #
+# Autor: Jan Kumor                                        #
+###########################################################
+
+#######################	
+# Konfiguracja modelu #
+#######################
+model OWD.mod;
+data OWD.dat;
+option solver cplex;
+
+#############################
+# Metoda punktu odniesienia #
+#############################
+printf "\n##############################\n";
+printf "### Reference point method ###\n";
+printf "##############################\n";
+objective MaximizeRating;
+solve;
+for {t in 1..T} {
+	printf "\n##################\n";
+	printf "###   Hour %d   ###\n", t;
+	printf "##################\n";
+	printf "Intakes production:\n";
+	for {i in INTAKeS} {
+		printf "- %s ", i;
+		if active[t,i] 
+		then printf "(ACTIVe) ";
+		else printf "(INACTIVe) ";  
+		printf "%dt (", intakeProduction[t,i];
+		for {r in RANGeS} {
+			printf "%s: %d ", r, intakeProductionInRange[t,i,r];
+		}
+		printf ")\n";
+	}
+	printf "Demand: %d\n", hourlyDemand[t]; 
+	printf "Production: %d\n", hourlyProduction[t];
+	printf "Cost:\n - Fixed: %d\n - Variable: %d\n - Total: %d\n", 
+		hourlyFixedCost[t], hourlyVariableCost[t], hourlyCost[t];
+}
+printf "\n##################\n";
+printf "Total cost: %d\n", totalCost;
+printf "Pollution produced: %d\n", totalPollution;
+printf "\n\tValue\tAspiration\tDistance\tLambda\n";
+for {r in RATeD} {
+	printf "%s\t%d\t%d\t\t%d\t\t%f\n", r, value[r], aspiration[r], distance[r], lambda[r];
+}
+
+printf "Rating: %f\n", MaximizeRating; 

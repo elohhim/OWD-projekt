@@ -1,0 +1,73 @@
+###########################################################
+# System wspomagajacy decyzje w zakresie planowania pracy #
+# ujec wody.                                              #
+# DANE                                                    #
+# Autor: Jan Kumor                                        #
+###########################################################
+
+# Zbiory indeksowe
+# Ujecia wody
+set INTAKES := A B C;
+
+# Zakresy wolumenu produkcji ujec o roznych kosztach
+set RANGES := NORMAL HIGH;
+
+# Liczba godzin
+param T := 4;
+
+# Maksymalna wydajnosc ujec wody [t/h]
+param	efficiency :=
+	A	896
+	B	570
+	C	771
+	;
+# Koszta zmienne pracy ujec [zl/t] 
+param variableCost:
+		NORMAL	HIGH :=
+	A	87 		125
+	B	93		193
+	C	78		120
+	;
+# Progi zakresow wolumenu produkcji o roznych kosztach [t/h]
+param threshold default 999999: 	
+		NORMAL :=
+	A	716
+	B	456
+	C	539
+	;
+# Koszta stale pracy ujec [zl/h]
+param	fixedCost :=
+	A	9800
+	B	6600
+	C	6000
+	;
+# Ilosc wytwarzanych zanieczyszczeñ [g/t]
+param	pollution :=
+	A	300
+	B	310
+	C	270
+	;
+
+# Zapotrzebowanie na wode w kolejnych godzinach [t]
+param	hourlyDemand :=
+	1	1377
+	2	1429
+	3	445
+	4	1712
+	;
+	
+# Metoda punktu odniesienia
+
+param epsilon = 0.000025;
+
+param beta = 0.001; 
+
+param 		lambda :=
+ 	COST 	-0.00001115
+ 	PLTN	-0.00001037
+ 	; 
+
+param 		aspiration := 
+	COST	582029
+	PLTN	1503070
+	;

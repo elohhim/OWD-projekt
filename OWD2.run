@@ -1,0 +1,54 @@
+###########################################################
+# System wspomagajacy decyzje w zakresie planowania pracy #
+# ujec wody.                                              #
+# SKRYPT URUCHAMIAJACY - Wyznaczenie utopii i nadiru      #
+# Autor: Jan Kumor                                        #
+###########################################################
+
+#######################	
+# Konfiguracja modelu #
+#######################
+model OWD.mod;
+data OWD.dat;
+option solver cplex;
+
+###########################################################
+# Rozwiazania optymalne dla wyznaczenia granic zmiennoœci #
+# tj wektorow zenitu i nadiru                             #
+###########################################################
+# Minimalny koszt
+printf "#######################\n";
+printf "### Minimizing cost ###\n";
+printf "#######################\n";
+objective MinimizeCost;
+solve;
+printf "Cost: %d\n", totalCost;
+printf "Pollution: %d\n", totalPollution;
+
+# Maksymalny koszt
+printf "#######################\n";
+printf "### Maximizing cost ###\n";
+printf "#######################\n";
+objective MaximizeCost;
+solve;
+printf "Cost: %d\n", totalCost;
+printf "Pollution: %d\n", totalPollution;
+
+
+# Minimalny poziom zanieczyszczeñ
+printf "\n############################\n";
+printf "### Minimizing pollution ###\n";
+printf "############################\n";
+objective MinimizePollution;
+solve;
+printf "Cost: %d\n", totalCost;
+printf "Pollution: %d\n", totalPollution;
+
+# Maksymalny poziom zanieczyszczeñ
+printf "\n############################\n";
+printf "### Maximizing pollution ###\n";
+printf "############################\n";
+objective MaximizePollution;
+solve;
+printf "Cost: %d\n", totalCost;
+printf "Pollution: %d\n", totalPollution;
